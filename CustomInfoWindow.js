@@ -1,5 +1,5 @@
 (function(d, w, u) {
-  var run = function() {
+	var run = function() {
 		var c = w.CustomInfoWindow = function(elem, options) {
 			var defaultOptions = {
 				location: new google.maps.LatLng(52.374004, 4.890359),
@@ -7,7 +7,11 @@
 					x: 0,
 					y: 0
 				},
-				padding: 40
+				padding: 40,
+				elementEdge: {
+					x: 'left',
+					y: 'top'
+				}
 			}
 			this.shown = false;
 			this.firstDraw = true;
@@ -16,7 +20,9 @@
 			for (var o in defaultOptions) {
 				if (!this.options.hasOwnProperty(o)) this.options[o] = defaultOptions[o];
 			}
-			if (this.options.location) this.setLocation(this.options.location);
+			if (this.options.elementEdge.x != 'left' && this.options.elementEdge.x != 'right') this.options.elementEdge.x = 'left';
+			if (this.options.elementEdge.y != 'top' && this.options.elementEdge.y != 'bottom') this.options.elementEdge.y = 'top';
+			if (this.options.location && this.options.location.constructor == google.maps.LatLng) this.setLocation(this.options.location);
 			if (this.options.map) this.setMap(this.options.map);
 		};
 		c.prototype = new google.maps.OverlayView();
@@ -29,6 +35,8 @@
 			this.elem.style.display = 'block';
 			this.shown = true;
 			this.firstDraw = true;
+			if (this.options.elementEdge.x == 'right') this.options.offset.x -= this.elem.clientWidth;
+			if (this.options.elementEdge.y == 'bottom') this.options.offset.y -= this.elem.clientHeight;
 		};
 		c.prototype.draw = function() {
 			var p = this.getProjection().fromLatLngToContainerPixel(this.location);
@@ -60,6 +68,7 @@
 			google.maps.event.removeListener(this.ievh);
 		};
 		c.prototype.setElement = function(elem) {
+			if (typeof elem == 'string') elem = d.getElementById(elem);
 			this.elem = elem;
 			this.elem.style.display = 'none';
 			this.elem.style.position = 'absolute';
