@@ -21,6 +21,9 @@ Currently the following options are available:
 - offset: a javascript-object containing the properties 'x' and 'y', which allow you to offset the element from the
   location on the map. When this is 0,0 (the default), the topleft corner of the element will be positioned on the
   point of the location.
+- elementEdge: a javascript-object containing the properties 'x' and 'y', which allow you to align different axis of the
+  element to the location. Valid values for x are 'left' and 'right, valid values for y are 'top' and 'bottom'. Defaults
+  to 'left' and 'top'.
 
 On a CustomInfoWindow-object, the following methods are available:
 - setMap(google.maps.Map): show the CustomInfoWindow on the given Map
